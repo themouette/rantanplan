@@ -1,0 +1,26 @@
+{
+  "name": "rantanplan-server",
+  "version": "1.0.0",
+  "description": "A simple server to monitor local machine load",
+  "main": "index.js",
+  "scripts": {
+    "build": "rm -rf dist && babel src -d dist --ignore spec.js,test.js",
+    "dev": "DEBUG=rantanplan:* nodemon index.dev.js",
+    "start": "NODE_ENV=production node index.js",
+    "test": "jest"
+  },
+  "private": true,
+  "author": "Julien Muetton",
+  "license": "ISC",
+  "dependencies": {
+    "debug": "^3.1.0",
+    "express": "^4.16.3"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-register": "^6.26.0",
+    "jest": "^22.4.3",
+    "nodemon": "^1.17.2"
+  }
+}

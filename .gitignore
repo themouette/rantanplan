@@ -1,0 +1,12 @@
+# Ignore node_modules
+/server/node_modules
+/client/node_modules
+
+# Ignore jest coverage generated files
+/server/coverage
+/client/coverage
+
+# Ignore the build files
+/server/dist
+/client/build
+/dist
