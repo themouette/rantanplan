@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+
+# Run tests for all the projects.
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+REPODIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
+
+declare -a PROJECTS=("client" "server")
+
+
+################################################################################
+# checks a required command is available
+# Globals:
+#   None
+# Arguments:
+#   $command_name
+# Returns
+#   None
+################################################################################
+function do_check_command_exists {
+    command_name="${1:-}"
+
+    [[ -n "${command_name}" ]] || {
+        echo >&2 "do_check_command_exists expects to receive a parameter"
+        exit 1
+    }
+
+    command -v "$command_name" >/dev/null 2>&1 || {
+        echo >&2 "I require ${command_name} to run"
+        exit 1
+    }
+}
+
+
+################################################################################
+# Program main function
+# Globals:
+#   REPODIR
+#   PROJECTS
+# Arguments:
+#   None
+# Returns
+#   None
+################################################################################
+function main {
+    do_check_command_exists npm
+
+    for project in "${PROJECTS[@]}"
+    do
+        cd "${REPODIR}/${project}"
+        echo "================================="
+        echo "> Testing project ${project}"
+        echo "================================="
+        npm test -- --coverage --ci
+    done
+}
+
+main $@
