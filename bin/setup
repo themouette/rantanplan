@@ -56,6 +56,10 @@ function main {
         echo "================================="
         npm install
     done
+
+    # Build all the required dependencies
+    cd "${REPODIR}"
+    ./bin/build
 }
 
 main $@
