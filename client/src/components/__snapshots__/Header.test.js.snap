@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Header /> should render 1`] = `
+<header
+  className="App-header"
+>
+  <img
+    alt="Rantanplan"
+    className="App-logo"
+    src="rantanplan-250.png"
+  />
+  <h1
+    className="App-title"
+  >
+    Rantanplan, Modern Monitoring & Analytics (For Localhost)
+  </h1>
+</header>
+`;
