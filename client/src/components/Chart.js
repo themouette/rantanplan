@@ -46,11 +46,23 @@ class Chart extends Component<Props> {
   }
 
   getDatasets() {
+    // We need to copy _meta from dataset
+    const currentDataSets = this.chart
+      ? this.chart.data.datasets
+      : [{}, {}, {}];
+
     return [
       { label: '1 minute', data: this.props.oneMinute, pointRadius: 0 },
       { label: '5 minutes', data: this.props.fiveMinutes, pointRadius: 0 },
       { label: '15 minutes', data: this.props.fifteenMinutes, pointRadius: 0 },
-    ];
+    ].map((newDataset, index) => {
+      if (currentDataSets[index]._meta) {
+        // $FlowFixMe the meta key is a ChartJS property
+        newDataset._meta = currentDataSets[index]._meta;
+      }
+
+      return newDataset;
+    });
   }
 
   componentDidMount() {
