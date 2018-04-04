@@ -2,17 +2,26 @@
 
 exports[`<Header /> should render 1`] = `
 <header
-  className="App-header"
+  className="App-Header"
 >
   <img
     alt="Rantanplan"
-    className="App-logo"
+    className="App-Logo"
     src="rantanplan-250.png"
   />
-  <h1
-    className="App-title"
+  <div
+    className="App-Title"
   >
-    Rantanplan, Modern Monitoring & Analytics (For Localhost)
-  </h1>
+    <h1
+      className="App-Title-Content"
+    >
+      Rantanplan
+    </h1>
+    <h2
+      className="App-Title-Subtitle"
+    >
+      Modern Monitoring & Analytics (For Localhost)
+    </h2>
+  </div>
 </header>
 `;

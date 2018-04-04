@@ -70,3 +70,13 @@ To run tests, just run `./bin/test`. It will execute both test suite.
 
 To run a project test suite in development mode, go to the project directory and
 run `npm test -- --watch --notify --coverage`
+
+## TODO
+
+* move to an electron application in order to ease deployment
+* Improve the style
+* Separate the `src/components/Metrics` into smaller, easy to maintain
+  components
+* Move the data formatting logic from `src/components/Dashboard` to rendering
+  components. It will allow to change widgets styles to draw user attention on
+  problems.

@@ -1,0 +1,130 @@
+/**
+ * We use flexbox to manage the layout.
+ *
+ * On every device, the alert box can appear above the data.
+ * On every device the 'infos' are displayed above the data.
+ *
+ * On small screens, the layout is arranged in 2 rows:
+ *  - chart is displayed first
+ *  - values are displayed below
+ *
+ * On large screens, we use 2 columns:
+ *  - values are displayed on the left column
+ *  - chart is displayed on the main part
+ */
+
+.Metrics-infos {
+  flex: 0 1 auto;
+
+  /* this is a flex container as well */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  align-content: flex-start;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+}
+  .Metrics-infos-item {
+    flex: 1 1 auto;
+    text-align: center;
+  }
+  .Metrics-infos-item-label {
+    font-weight: bold;
+    display: block;
+  }
+  .Metrics-infos-item-value {
+    display: block;
+  }
+@media screen and (min-width: 640px) {
+  .Metrics-infos-item-label {
+    display: inline-block;
+    margin-right: 10px;
+  }
+  .Metrics-infos-item-value {
+    display: inline-block;
+  }
+}
+
+
+.Metrics-alert {
+  flex: 0 1 auto;
+}
+.Metrics-main {
+  /* this is a flex child for the vertical layout */
+  flex: 1 1 auto;
+  max-width: 100vw;
+
+  /* this is a flex container as well */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  align-content: flex-start;
+  justify-content: center;
+  flex-wrap: nowrap;
+}
+
+  .Metrics-values {
+    order: 2;
+    flex: 1 0 200px;
+    padding: 10px 10px 10px 20px;
+
+    /* this is a flex container as well */
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    align-content: flex-start;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+  }
+
+  .Metrics-chart {
+    order: 1;
+    flex: 2 0 auto;
+    /*
+     * the relative postion is required for the chart
+     * It allows chart container to be absolutely positionned
+     * so it can fit all space.
+     * This is the recommanded way to do it on the project website.
+     */
+    position: relative;
+  }
+
+@media screen and (min-width: 640px) {
+  .Metrics-main {
+    flex-direction: row;
+  }
+    .Metrics-values {
+      order: 1;
+      flex: 0 0 300px;
+
+      /* change the flex container behavior for desktop */
+      flex-direction: column;
+      flex-wrap: nowrap;
+    }
+
+    .Metrics-chart {
+      order: 2;
+      flex: 1 0 auto;
+      position: relative;
+    }
+}
+
+/**
+ * Define the metrics value widget
+ */
+.Metrics-value-widget {
+  flex: 1 0 auto;
+  margin-bottom: 10px;
+  margin-right: 10px;
+
+  border: 1px solid #ccc;
+  border-radius: 30px;
+  padding: 10px;
+  text-align: center;
+}
+  .Metrics-value-widget-value {
+    font-size: 1.7em;
+  }
+  .Metrics-value-widget-title {
+    font-weight: bold;
+  }

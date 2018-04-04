@@ -1,6 +1,7 @@
 /* @flow */
 import React, { Component } from 'react';
 
+import './Header.css';
 import logo from '../assets/rantanplan-250.png';
 
 
@@ -14,11 +15,16 @@ class Header extends Component<Props> {
 
   render() {
     return (
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="Rantanplan" />
-        <h1 className="App-title">
-          Rantanplan, Modern Monitoring & Analytics (For Localhost)
-        </h1>
+      <header className="App-Header">
+        <img src={logo} className="App-Logo" alt="Rantanplan" />
+        <div className="App-Title">
+          <h1 className="App-Title-Content">
+            Rantanplan
+          </h1>
+          <h2 className="App-Title-Subtitle">
+            Modern Monitoring & Analytics (For Localhost)
+          </h2>
+        </div>
       </header>
     );
   }

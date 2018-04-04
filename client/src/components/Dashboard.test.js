@@ -52,10 +52,18 @@ describe('<Dashboard />', () => {
           isFailure={false}
           isSuccess
           data={{
+            sampling: 1000,
             hostname: 'laptop',
             uptime: 12345,
             freeMemory: 1024,
             totalMemory: 2048,
+            loadAverage: {
+              time: [],
+              oneMinute: [],
+              fiveMinutes: [],
+              fifteenMinutes: [],
+              ...(data.loadAverage || {}),
+            },
             ...data,
           }}
         />
@@ -120,6 +128,85 @@ describe('<Dashboard />', () => {
       });
 
       expect(wrapper.find(Metrics)).toHaveProp('freeMemory', '3.5GB');
+    });
+
+    it('should compute time to ellapsed seconds', () => {
+      const now = Date.now();
+      const second = 1000;
+      const wrapper = shallowSuccess({
+        loadAverage: {
+          oneMinute: [1.4, 0.2, 1.3, 0.7, 0.5],
+          time: [
+            now - 3 * second,
+            now - 2 * second,
+            now - 1 * second,
+            now,
+          ]
+        },
+      });
+      const expected = [- 3 * second, - 2 * second, - second, 0];
+
+      expect(wrapper.find(Metrics)).toHaveProp('time', expected);
+    });
+
+    it('should compute load average extremums', () => {
+      const wrapper = shallowSuccess({
+        loadAverage: {
+          oneMinute: [1.4, 0.2, 1.3, 0.7, 0.5],
+        },
+      });
+
+      expect(wrapper.find(Metrics))
+        .toHaveProp('loadAverageExtremums', { min: 0.2, max: 1.4 });
+    });
+
+    it('should compute load average extremums with no data', () => {
+      const wrapper = shallowSuccess({
+        loadAverage: {
+          oneMinute: [],
+        },
+      });
+
+      expect(wrapper.find(Metrics))
+        .toHaveProp('loadAverageExtremums', { min: 0, max: 0 });
+    });
+
+    it('should compute 2 minutes average', () => {
+      const now = Date.now();
+      const minute = 60 * 1000;
+      const wrapper = shallowSuccess({
+        loadAverage: {
+          oneMinute: [1.4, 0.2, 0.7, 0.5],
+          time: [
+            now - 3 * minute,
+            now - 2 * minute + 2,
+            now - 1 * minute,
+            now,
+          ]
+        },
+      });
+
+      expect(wrapper.find(Metrics))
+        .toHaveProp('last2MinutesLoad', (0.2 + 0.7 + 0.5) / 3);
+    });
+
+    it('should compute 2 minutes average when missing data', () => {
+      const now = Date.now();
+      const second = 1000;
+      const wrapper = shallowSuccess({
+        loadAverage: {
+          oneMinute: [1.4, 0.2, 0.7, 0.5],
+          time: [
+            now - 3 * second,
+            now - 2 * second,
+            now - 1 * second,
+            now,
+          ]
+        },
+      });
+
+      expect(wrapper.find(Metrics))
+        .toHaveProp('last2MinutesLoad', (1.4 + 0.2 + 0.7 + 0.5) / 4);
     });
   });
 });

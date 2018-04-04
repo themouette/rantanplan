@@ -1,0 +1,37 @@
+.App-Header {
+  background-color: #222;
+  color: white;
+  text-align: center;
+}
+
+.App-Title {
+  text-align: start;
+  display: inline-block;
+  padding: 20px;
+}
+.App-Logo {
+  display: inline-block;
+  height: 60px;
+}
+
+.App-Title-Content {
+  font-size: 1.5em;
+}
+.App-Title-Subtitle {
+  font-size: 1.2em;
+  display: none;
+}
+
+@media screen and (min-width: 640px) {
+  .App-Logo {
+    height: 80px;
+  }
+
+  .App-Title-Content {
+    font-size: 1.5em;
+  }
+
+  .App-Title-Subtitle {
+    display: block;
+  }
+}

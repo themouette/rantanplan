@@ -1,0 +1,54 @@
+/**
+ * Layout is leveraging flexbox to organize application content.
+ */
+.Layout {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: stretch;
+  align-content: flex-start;
+}
+
+.Layout-Header {
+  flex: 0 1 auto;
+}
+.Layout-Content {
+  /* this is a flex child for the vertical layout */
+  flex: 1 1 auto;
+
+  /* this is a flex container as well */
+  display: flex;
+  flex-direction: column;
+  align-content: flex-start;
+  justify-content: center;
+  flex-wrap: nowrap;
+  align-items: stretch;
+}
+
+.Layout-Content-Centered {
+  flex: 0 0 auto;
+  align-self: center;
+}
+
+.Layout-Content-Columns {
+  /* this is a flex item in the main layout */
+  flex: 1 1 auto;
+  align-self: stretch;
+
+  /* this is a flex container as well */
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: stretch;
+  align-content: flex-start;
+}
+
+@media screen and (min-width: 640px) {
+  .Layout-Header {
+    min-height: 80px;
+  }
+}

@@ -60,6 +60,13 @@ export const createScheduler = (task, interval) => {
   return { start, stop };
 };
 
+// Truncate an array to `maxLength`.
+// this function mutate the original array.
+export const mutateTruncate = (arr, maxLength) => {
+  if (arr.length <= maxLength) return arr;
+  arr.splice(0, arr.length - maxLength);
+}
+
 // Create a monitoring daemon.
 // This daemon relies on `createScheduler` to execute a task that monitors the
 // current machine state.
@@ -79,7 +86,11 @@ export const createScheduler = (task, interval) => {
 // monitoring.stop();
 // ```
 const createMonitoring = (interval) => {
+  // we remove one item to ensure the graph scale does not blink
+  const maxItems = (10 * 60 * 1000 / interval) - 1;
+
   const data = {
+    sampling: interval,
     hostname: os.hostname(),
     uptime: os.uptime(),
     memory: {
@@ -87,6 +98,7 @@ const createMonitoring = (interval) => {
       total: os.totalmem(),
     },
     loadAverage: {
+      time: [],
       oneMinute: [],
       fiveMinutes: [],
       fifteenMinutes: [],
@@ -95,11 +107,21 @@ const createMonitoring = (interval) => {
 
   const task = () => {
     const load = os.loadavg();
+    const now = (new Date()).getTime();
+
+    // append data
+    data.loadAverage.time.push(now);
     data.loadAverage.oneMinute.push(load[0]);
     data.loadAverage.fiveMinutes.push(load[1]);
     data.loadAverage.fifteenMinutes.push(load[2]);
 
+    mutateTruncate(data.loadAverage.time, maxItems);
+    mutateTruncate(data.loadAverage.oneMinute, maxItems);
+    mutateTruncate(data.loadAverage.fiveMinutes, maxItems);
+    mutateTruncate(data.loadAverage.fifteenMinutes, maxItems);
+
     data.memory.free = os.freemem();
+    data.uptime = os.uptime();
   };
 
   const { start, stop } = createScheduler(task, interval);

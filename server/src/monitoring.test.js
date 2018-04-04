@@ -1,4 +1,4 @@
-import createMonitoring, { createScheduler } from './monitoring';
+import createMonitoring, { createScheduler, mutateTruncate } from './monitoring';
 
 describe('Scheduler', () => {
   let task;
@@ -76,6 +76,29 @@ describe('Scheduler', () => {
 
     expect(task).toHaveBeenCalledTimes(2);
     expect(setTimeout).toHaveBeenCalledTimes(2);
+  });
+});
+
+describe('mutateTruncate', () => {
+  it('should manipulate the original array', () => {
+    const arr = [0, 1, 2, 3];
+    mutateTruncate(arr, 3);
+
+    expect(arr).toHaveLength(3);
+  });
+
+  it('should not truncate if array is too short', () => {
+    const arr = [0, 1, 2, 3];
+    mutateTruncate(arr, 5);
+
+    expect(arr).toHaveLength(4);
+  });
+
+  it('should not truncate if array is the exact size', () => {
+    const arr = [0, 1, 2, 3];
+    mutateTruncate(arr, 4);
+
+    expect(arr).toHaveLength(4);
   });
 });
 

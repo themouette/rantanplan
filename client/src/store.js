@@ -7,9 +7,16 @@ export type FetchResponse = {
   status: number,
 };
 export type MetricsResponseBody = {
+  sampling: number,
   hostname: string,
   uptime: number,
   memory: { free: number, total: number },
+  loadAverage: {
+    time: Array<number>,
+    oneMinute: Array<number>,
+    fiveMinutes: Array<number>,
+    fifteenMinutes: Array<number>,
+  },
 };
 
 export type Props = { interval: number }
