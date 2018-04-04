@@ -2,6 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 import Dashboard from './Dashboard';
+import Header from './Header';
 import Loading from './Loading';
 import Alert from './Alert';
 import Metrics from './Metrics';
@@ -19,6 +20,18 @@ describe('<Dashboard />', () => {
     expect(wrapper.find(Loading)).toHaveLength(1);
   });
 
+  it('should render < Header/> when data is not available', () => {
+    const wrapper = shallow(
+      <Dashboard
+        isFetching={false}
+        isFailure={false}
+        isSuccess={false}
+      />
+    );
+
+    expect(wrapper.find(Header)).toHaveLength(1);
+  });
+
   it('should render when loading', () => {
     const wrapper = shallow(
       <Dashboard
@@ -29,6 +42,18 @@ describe('<Dashboard />', () => {
     );
 
     expect(wrapper.find(Loading)).toHaveLength(1);
+  });
+
+  it('should render <Header /> when loading', () => {
+    const wrapper = shallow(
+      <Dashboard
+        isFetching
+        isFailure={false}
+        isSuccess={false}
+      />
+    );
+
+    expect(wrapper.find(Header)).toHaveLength(1);
   });
 
   it('should render when failure', () => {

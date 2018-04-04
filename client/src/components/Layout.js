@@ -24,17 +24,17 @@ export const Content = (props: ContentProps) => (
   <div className="Layout-Content">{props.children}</div>
 );
 
-export type LayoutContentCenteredProps = {
+export type ContentCenteredProps = {
   children: Node,
 };
-export const LayoutContentCentered = (props: LayoutContentCenteredProps) => (
+export const ContentCentered = (props: ContentCenteredProps) => (
   <div className="Layout-Content-Centered">{props.children}</div>
 );
 
-export type LayoutContentColumnsProps = {
+export type ContentColumnsProps = {
   children: Node,
 };
-export const LayoutContentColumns = (props: LayoutContentColumnsProps) => (
+export const ContentColumns = (props: ContentColumnsProps) => (
   <div className="Layout-Content-Columns">{props.children}</div>
 );
 

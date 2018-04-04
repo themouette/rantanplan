@@ -4,7 +4,6 @@ import { shallow } from 'enzyme';
 
 import App from './App';
 import Dashboard from './components/Dashboard';
-import Header from './components/Header';
 
 
 const originalFetch = fetch;
@@ -40,19 +39,6 @@ describe('<App />', () => {
     const div = document.createElement('div');
     ReactDOM.render(<App interval={1000} />, div);
     ReactDOM.unmountComponentAtNode(div);
-  });
-
-  it('render <Header /> with initial data', () => {
-    mockFetch(200, {});
-
-    const wrapper = shallow(<App interval={1000} />);
-    const dashboard = wrapper.find(Header).first();
-
-    expect(dashboard).toHaveProp({
-      isFetching: true,
-      isSuccess: false,
-      isFailure: false,
-    });
   });
 
   it('render <Dashboard /> with initial data', () => {

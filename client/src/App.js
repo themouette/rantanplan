@@ -3,8 +3,6 @@ import React, { Component } from 'react';
 import 'normalize.css/normalize.css';
 import './App.css';
 import createStore, { type Store, type State as StoreState } from './store';
-import * as Layout from './components/Layout';
-import Header from './components/Header';
 import Dashboard from './components/Dashboard';
 
 
@@ -53,14 +51,7 @@ class App extends Component<Props, State> {
 
   render() {
     return (
-      <Layout.Root>
-        <Layout.Header>
-          <Header {...this.state} />
-        </Layout.Header>
-        <Layout.Content>
-          <Dashboard {...this.state} />
-        </Layout.Content>
-      </Layout.Root>
+      <Dashboard {...this.state} />
     );
   }
 }

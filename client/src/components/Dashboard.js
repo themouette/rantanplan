@@ -1,9 +1,10 @@
 /* @flow */
-import React, { Component } from 'react';
+import React, { Component, type Node } from 'react';
 import idx from 'idx';
 
 import type { State as StoreState } from '../store';
-import { LayoutContentCentered, LayoutContentColumns } from './Layout';
+import * as Layout from './Layout';
+import Header from './Header';
 import Loading from './Loading';
 import Alert from './Alert';
 import Metrics from './Metrics';
@@ -146,10 +147,23 @@ class Dashboard extends Component<Props> {
     );
   }
 
+  decorateContent(content: Node) {
+    return (
+      <Layout.Root>
+        <Layout.Header>
+          <Header {...this.state} />
+        </Layout.Header>
+        <Layout.Content>
+          {content}
+        </Layout.Content>
+      </Layout.Root>
+    );
+  }
+
   render() {
     if (this.props.isSuccess) {
-      return (
-        <LayoutContentColumns>
+      return this.decorateContent(
+        <Layout.ContentColumns>
           <Metrics
             hostname={this.getHostname()}
             uptime={this.getUptime()}
@@ -162,25 +176,25 @@ class Dashboard extends Component<Props> {
             fiveMinutes={this.getLoadAverage5()}
             fifteenMinutes={this.getLoadAverage15()}
           />
-        </LayoutContentColumns>
+        </Layout.ContentColumns>
       );
     }
 
     if (this.props.isFailure) {
-      return (
-        <LayoutContentCentered>
+      return this.decorateContent(
+        <Layout.ContentCentered>
           <Alert type="error">
             <img src={crashLogo} className="Dashboard-Error-img" />
             <p>An unexpected error occured.</p>
           </Alert>
-        </LayoutContentCentered>
+        </Layout.ContentCentered>
       );
     }
 
-    return (
-      <LayoutContentCentered>
+    return this.decorateContent(
+      <Layout.ContentCentered>
         <Loading />
-      </LayoutContentCentered>
+      </Layout.ContentCentered>
     );
   }
 }
