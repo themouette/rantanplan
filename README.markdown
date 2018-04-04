@@ -70,6 +70,20 @@ To run tests, just run `./bin/test`. It will execute both test suite.
 To run a project test suite in development mode, go to the project directory and
 run `npm test -- --watch --notify --coverage`
 
+## Screenshots
+
+### Large Screens
+
+![show alerts](https://raw.githubusercontent.com/themouette/rantanplan/master/screenshots/Desktop-alerts.png)
+![high load](https://raw.githubusercontent.com/themouette/rantanplan/master/screenshots/Desktop-high-load.png)
+![unread alerts](https://raw.githubusercontent.com/themouette/rantanplan/master/screenshots/Desktop-unread-alerts.png)
+
+### Small Screens
+
+![show alerts](https://raw.githubusercontent.com/themouette/rantanplan/master/screenshots/Mobile-alerts.png)
+![high load](https://raw.githubusercontent.com/themouette/rantanplan/master/screenshots/Mobile-high-load.png)
+![unread alerts](https://raw.githubusercontent.com/themouette/rantanplan/master/screenshots/Mobile-unread-alerts.png)
+
 ## TODO
 
 ### Use Electron
