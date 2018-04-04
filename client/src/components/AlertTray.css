@@ -1,0 +1,95 @@
+.AlertTray {
+  flex: 0 0 100%;
+  order: -1;
+  overflow: visible;
+}
+.AlertTray-Button {
+  display: block;
+
+  padding: 10px;
+
+  height: 100%;
+
+  cursor: pointer;
+  text-align: center;
+}
+
+.AlertTray-Button-Title {
+  display: inline-block;
+
+  padding: 5px 10px;
+}
+.AlertTray-Button-Counter {
+  display: inline-block;
+
+  padding: 5px 10px;
+
+  border-radius: 50%;
+  color: white;
+  background-color: #dc3545;
+}
+
+.AlertTray-Content {
+  position: absolute;
+  right: 0;
+
+  padding: 0 20px;
+  z-index: 1000;
+
+  width: 100vw;
+  height: 84vh;
+
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  background-color: white;
+}
+
+.AlertTray-Alert {
+  width: 100%;
+  padding: 10px;
+}
+
+@media screen and (min-width: 640px) {
+  .AlertTray {
+    order: 3;
+    flex: 0 0 auto;
+  }
+  .AlertTray-Button {
+    display: inline-block;
+    vertical-align: middle;
+    padding: 10px;
+  }
+  .AlertTray-Content {
+    width: 400px;
+    height: auto;
+    max-height: 50vh;
+  }
+}
+
+
+.AlertTray-Button:hover, .AlertTray-Button-open {
+  background-color: #ccc;
+  color: white;
+}
+
+.AlertTray-Button-hasNew:hover {
+}
+.AlertTray-Button-hasNew {
+}
+
+.AlertTray-Alert-info {
+  color: white;
+  background-color: #007bff;
+}
+.AlertTray-Alert-success {
+  color: white;
+  background-color: #28a745;
+}
+.AlertTray-Alert-warning {
+  color: #343a40;
+  background-color: #ffc107;
+}
+.AlertTray-Alert-danger {
+  color: white;
+  background-color: #dc3545;
+}

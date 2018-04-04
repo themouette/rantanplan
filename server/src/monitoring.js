@@ -67,6 +67,51 @@ export const mutateTruncate = (arr, maxLength) => {
   arr.splice(0, arr.length - maxLength);
 }
 
+export const computeLast2MinutesAverage = (data) => {
+  // iterate over load average values from the end until
+  // we reach the start of the array OR we reached the 2 minutes timeframe
+  const loads = data.loadAverage.oneMinute;
+  const times = data.loadAverage.time;
+
+  const two_minutes_ago = Date.now() - 2 * 60 * 1000;
+
+  let index;
+  let lastIndex = times.length - 1;
+  let sum = 0;
+  let count = 0;
+  for (
+    index = lastIndex;
+    index >= 0 && times[index] >= two_minutes_ago;
+    index--
+  ) {
+    count++;
+    sum = sum + loads[index];
+  }
+
+  return sum / count;
+}
+
+export const computeNewAlert = (now, oldAverage, newAverage) => {
+  if (newAverage >= 2 && oldAverage <= 2) {
+    // we just passed above the threshold, trigger an alert
+    return {
+      type: 'ABOVE_THRESHOLD',
+      time: now,
+      value: newAverage,
+    };
+  }
+  if (newAverage < 2 && oldAverage >= 2) {
+    // we just passed below the threshold, trigger an alert
+    return {
+      type: 'BELOW_THRESHOLD',
+      time: now,
+      value: newAverage,
+    };
+  }
+
+  return undefined;
+};
+
 // Create a monitoring daemon.
 // This daemon relies on `createScheduler` to execute a task that monitors the
 // current machine state.
@@ -99,10 +144,12 @@ const createMonitoring = (interval) => {
     },
     loadAverage: {
       time: [],
+      last2Minutes: 0,
       oneMinute: [],
       fiveMinutes: [],
       fifteenMinutes: [],
     },
+    alerts: [],
   };
 
   const task = () => {
@@ -119,6 +166,17 @@ const createMonitoring = (interval) => {
     mutateTruncate(data.loadAverage.oneMinute, maxItems);
     mutateTruncate(data.loadAverage.fiveMinutes, maxItems);
     mutateTruncate(data.loadAverage.fifteenMinutes, maxItems);
+
+    const last2Minutes = computeLast2MinutesAverage(data);
+    const newAlert = computeNewAlert(
+      now,
+      data.loadAverage.last2Minutes,
+      last2Minutes
+    );
+    if (newAlert) {
+      data.alerts.unshift(newAlert);
+    }
+    data.loadAverage.last2Minutes = last2Minutes;
 
     data.memory.free = os.freemem();
     data.uptime = os.uptime();

@@ -1,9 +1,12 @@
 /* @flow */
 import React, { Component, Fragment, type Node } from 'react';
 
+import type { AlertData } from '../store';
 import './Metrics.css';
 import Chart from './Chart';
 import Alert from './Alert';
+import LoadAverage from './LoadAverage';
+import AlertTray from './AlertTray';
 
 
 type Props = {
@@ -12,11 +15,12 @@ type Props = {
   hostname: ?string,
   uptime: ?string,
   loadAverageExtremums: { min: number, max: number },
-  last2MinutesLoad: number,
+  last2MinutesLoad: ?number,
   time: ?Array<number>,
   oneMinute: ?Array<number>,
   fiveMinutes: ?Array<number>,
   fifteenMinutes: ?Array<number>,
+  alerts: ?Array<AlertData>,
 };
 
 type MetricProps = { label: string, value: ?(string | Node), icon?: string };
@@ -27,14 +31,6 @@ const Metric = (props: MetricProps) => (
   </div>
 );
 
-type LoadAverageProps = {
-  children: number,
-};
-const LoadAverage = (props: LoadAverageProps) => {
-  const precision = 100;
-  const round = Math.round(props.children * precision) / precision;
-  return <span>{round.toLocaleString()}</span>
-}
 
 /**
  * Metrics component
@@ -53,7 +49,7 @@ class Metrics extends Component<Props> {
   }
 
   renderAlert() {
-    if (this.props.last2MinutesLoad < 2) {
+    if (!this.props.last2MinutesLoad || this.props.last2MinutesLoad < 2) {
       return false;
     }
 
@@ -83,6 +79,7 @@ class Metrics extends Component<Props> {
           <span className="Metrics-infos-item-label">Uptime</span>
           <span className="Metrics-infos-item-value">{this.props.uptime}</span>
         </p>
+        <AlertTray alerts={this.props.alerts || []} />
       </div>
     );
   }

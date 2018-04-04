@@ -1,4 +1,9 @@
-import createMonitoring, { createScheduler, mutateTruncate } from './monitoring';
+import createMonitoring, {
+  createScheduler,
+  mutateTruncate,
+  computeLast2MinutesAverage,
+  computeNewAlert,
+} from './monitoring';
 
 describe('Scheduler', () => {
   let task;
@@ -158,5 +163,81 @@ describe('createMonitoring', () => {
     expect(data.loadAverage.oneMinute).toHaveLength(3);
     expect(data.loadAverage.fiveMinutes).toHaveLength(3);
     expect(data.loadAverage.fifteenMinutes).toHaveLength(3);
+  });
+
+  describe('computeLast2MinutesAverage', () => {
+    test('should compute 2 minutes average', () => {
+      const now = Date.now();
+      const minute = 60 * 1000;
+      const avg = computeLast2MinutesAverage({
+        loadAverage: {
+          oneMinute: [1.4, 0.2, 0.7, 0.5],
+          time: [
+            now - 3 * minute,
+            now - 2 * minute + 2,
+            now - 1 * minute,
+            now,
+          ]
+        },
+      });
+
+      expect(avg).toEqual((0.2 + 0.7 + 0.5) / 3);
+    });
+
+    test('should compute 2 minutes average when missing data', () => {
+      const now = Date.now();
+      const second = 1000;
+      const avg = computeLast2MinutesAverage({
+        loadAverage: {
+          oneMinute: [1.4, 0.2, 0.7, 0.5],
+          time: [
+            now - 3 * second,
+            now - 2 * second,
+            now - 1 * second,
+            now,
+          ]
+        },
+      });
+
+      expect(avg).toEqual((1.4 + 0.2 + 0.7 + 0.5) / 4);
+    });
+  });
+
+  describe('computeNewAlert', () => {
+    test('should return an alert if average move over threshold', () => {
+      const now = Date.now();
+      const alert = computeNewAlert(now, 1, 2.1);
+
+      expect(alert).toMatchObject({
+        type: 'ABOVE_THRESHOLD',
+        time: now,
+        value: 2.1,
+      });
+    });
+
+    test('should return an alert if average move under threshold', () => {
+      const now = Date.now();
+      const alert = computeNewAlert(now, 2.1, 1.3);
+
+      expect(alert).toMatchObject({
+        type: 'BELOW_THRESHOLD',
+        time: now,
+        value: 1.3,
+      });
+    });
+
+    test('should NOT return an alert if average stays over threshold', () => {
+      const now = Date.now();
+      const alert = computeNewAlert(now, 2.1, 2);
+
+      expect(alert).toBeUndefined();
+    });
+
+    test('should NOT return an alert if average stays under threshold', () => {
+      const now = Date.now();
+      const alert = computeNewAlert(now, 1.9, 1.2);
+
+      expect(alert).toBeUndefined();
+    });
   });
 });

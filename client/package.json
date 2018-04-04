@@ -6,6 +6,7 @@
     "chart.js": "^2.7.2",
     "es6-error": "^4.1.1",
     "idx": "^2.2.0",
+    "moment": "^2.22.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-scripts": "1.1.1"

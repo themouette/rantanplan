@@ -6,17 +6,24 @@ import type { Component } from 'react';
 export type FetchResponse = {
   status: number,
 };
+export type AlertData = {
+  type: 'BELOW_THRESHOLD' | 'ABOVE_THRESHOLD',
+  time: number,
+  value: number,
+};
 export type MetricsResponseBody = {
   sampling: number,
   hostname: string,
   uptime: number,
   memory: { free: number, total: number },
   loadAverage: {
+    last2Minutes: number,
     time: Array<number>,
     oneMinute: Array<number>,
     fiveMinutes: Array<number>,
     fifteenMinutes: Array<number>,
   },
+  alerts: Array<AlertData>,
 };
 
 export type Props = { interval: number }

@@ -148,6 +148,16 @@ In the process we could also refactor the `src/components/Metrics` component
 into a composer, assembling smaller, easier to follow, more reusable and more
 testable components.
 
+Also, make the alerts dismiss able would be a great UX improvement.
+
+### Fix Inconsistently Failing Test
+
+Due to the fact that I do not freeze the clock during tests (Jest does not
+provide this kind of utility), one test are failing from time to time.
+
+Using something similar to [Sinon.JS Fake
+Timers](http://sinonjs.org/releases/v1.17.7/fake-timers/) should do the trick.
+
 ### Release Process
 
 A release script would allow to release a new version in one line.
@@ -164,14 +174,6 @@ The expected process is:
 - Attach this archive to GitHub release page
 
 The expected interface is `./bin/release {patch|minor|major}`
-
-### Fix Inconsistently Failing Test
-
-Due to the fact that I do not freeze the clock during tests (Jest does not
-provide this kind of utility), one test are failing from time to time.
-
-Using something similar to [Sinon.JS Fake
-Timers](http://sinonjs.org/releases/v1.17.7/fake-timers/) should do the trick.
 
 ### Use A d3.js Charting Library
 

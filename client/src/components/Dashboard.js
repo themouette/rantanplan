@@ -118,23 +118,7 @@ class Dashboard extends Component<Props> {
   }
 
   getLast2MinutesLoad() {
-    // iterate over load average values from the end until
-    // we reach the start of the array OR we reached the 2 minutes timeframe
-    const loads = this.getLoadAverage1() || [];
-    const times = this.getTime() || [];
-
-    const two_minutes = -2 * 60 * 1000;
-
-    let index;
-    let lastIndex = times.length - 1;
-    let sum = 0;
-    let count = 0;
-    for (index = lastIndex; index >= 0 && times[index] >= two_minutes; index--) {
-      count++;
-      sum = sum + loads[index];
-    }
-
-    return sum / count;
+    return idx(this.props, _ => _.data.loadAverage.last2Minutes);
   }
 
   getLoadAverageExtremums() {
@@ -151,6 +135,10 @@ class Dashboard extends Component<Props> {
       }),
       { max: 0, min }
     );
+  }
+
+  getAlerts() {
+    return idx(this.props, _ => _.data.alerts);
   }
 
   decorateContent(content: Node) {
@@ -181,6 +169,7 @@ class Dashboard extends Component<Props> {
             oneMinute={this.getLoadAverage1()}
             fiveMinutes={this.getLoadAverage5()}
             fifteenMinutes={this.getLoadAverage15()}
+            alerts={this.getAlerts()}
           />
         </Layout.ContentColumns>
       );
@@ -190,7 +179,7 @@ class Dashboard extends Component<Props> {
       return this.decorateContent(
         <Layout.ContentCentered>
           <Alert type="error">
-            <img src={crashLogo} className="Dashboard-Error-img" />
+            <img src={crashLogo} alt="" className="Dashboard-Error-img" />
             <p>An unexpected error occured.</p>
           </Alert>
         </Layout.ContentCentered>

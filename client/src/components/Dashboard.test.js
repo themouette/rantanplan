@@ -84,6 +84,7 @@ describe('<Dashboard />', () => {
             totalMemory: 2048,
             loadAverage: {
               time: [],
+              last2Minutes: 1.2,
               oneMinute: [],
               fiveMinutes: [],
               fifteenMinutes: [],
@@ -194,44 +195,6 @@ describe('<Dashboard />', () => {
 
       expect(wrapper.find(Metrics))
         .toHaveProp('loadAverageExtremums', { min: 0, max: 0 });
-    });
-
-    it('should compute 2 minutes average', () => {
-      const now = Date.now();
-      const minute = 60 * 1000;
-      const wrapper = shallowSuccess({
-        loadAverage: {
-          oneMinute: [1.4, 0.2, 0.7, 0.5],
-          time: [
-            now - 3 * minute,
-            now - 2 * minute + 2,
-            now - 1 * minute,
-            now,
-          ]
-        },
-      });
-
-      expect(wrapper.find(Metrics))
-        .toHaveProp('last2MinutesLoad', (0.2 + 0.7 + 0.5) / 3);
-    });
-
-    it('should compute 2 minutes average when missing data', () => {
-      const now = Date.now();
-      const second = 1000;
-      const wrapper = shallowSuccess({
-        loadAverage: {
-          oneMinute: [1.4, 0.2, 0.7, 0.5],
-          time: [
-            now - 3 * second,
-            now - 2 * second,
-            now - 1 * second,
-            now,
-          ]
-        },
-      });
-
-      expect(wrapper.find(Metrics))
-        .toHaveProp('last2MinutesLoad', (1.4 + 0.2 + 0.7 + 0.5) / 4);
     });
   });
 });
