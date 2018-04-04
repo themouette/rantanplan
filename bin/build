@@ -36,6 +36,23 @@ function do_check_command_exists {
 }
 
 ################################################################################
+# Clean the build directory
+# Globals:
+#   REPODIR
+# Arguments:
+#   None
+# Returns
+#   None
+################################################################################
+function clean_build {
+    echo "======================================="
+    echo "> Clean /dist directory"
+    echo "======================================="
+
+    rm -rf "${REPODIR}/dist"
+}
+
+################################################################################
 # Build all the projects by runing `npm run build` on each
 # Globals:
 #   REPODIR
@@ -82,6 +99,25 @@ function combine_artifacts {
 }
 
 ################################################################################
+# Install npm packages in build
+# Globals:
+#   None
+# Arguments:
+#   None
+# Returns
+#   None
+################################################################################
+function post_build {
+    echo "======================================="
+    echo "> Installing node packages in /dist"
+    echo "======================================="
+
+    cd "${REPODIR}/dist"
+
+    npm install --production
+}
+
+################################################################################
 # Program main function
 # Globals:
 #   None
@@ -93,9 +129,13 @@ function combine_artifacts {
 function main {
     do_check_command_exists npm
 
+    clean_build
+
     build_all_projects
 
     combine_artifacts
+
+    post_build
 }
 
 main $@

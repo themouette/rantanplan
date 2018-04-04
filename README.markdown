@@ -44,7 +44,6 @@ To build the whole project, run the follwing:
 ``` sh
 ./bin/build
 cd dist
-npm install --production
 npm start
 ```
 
