@@ -54,6 +54,12 @@ const humanReadableSize = (sizeInByte) => {
 class Dashboard extends Component<Props> {
   static defaultProps = {};
 
+  componentDidMount() {
+    // Ensure the error image is in cache
+    const image = new Image();
+    image.src = crashLogo;
+  }
+
   getHostname() {
     return idx(this.props, _ => _.data.hostname);
   }
