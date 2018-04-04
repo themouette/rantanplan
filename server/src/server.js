@@ -38,9 +38,19 @@ const createServer = (port, publicDir, monitoring) => {
     // Start the server
     return new Promise((resolve, reject) => {
       listener = server.listen(port, () => {
+        let hostname;
         const { address, port } = listener.address();
-        debug(`Server listens on http://${address}:${port}`);
-        resolve({ address, port });
+
+        if (address.indexOf(':') > -1) {
+          // this is an ipv6 address
+          hostname = `[${address}]:${port}`;
+        } else {
+          hostname = `${address}:${port}`;
+        }
+
+        const url = `http://${hostname}`;
+        debug(`Server listens on ${url}`);
+        resolve({ address, port, url });
       });
     });
   };

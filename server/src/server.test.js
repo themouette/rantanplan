@@ -10,17 +10,8 @@ describe('Server', () => {
   const publicDir = __dirname;
 
   // A simple utility to generate a url for both ip v6 and ip v4
-  const formatUrl = ({ address, port }, path) => {
-    let hostname;
-
-    if (address.indexOf(':') > -1) {
-      // this is an ipv6 address
-      hostname = `[${address}]:${port}`;
-    } else {
-      hostname = `${address}:${port}`;
-    }
-
-    return `http://${hostname}${path}`;
+  const formatUrl = ({ url }, path) => {
+    return `${url}${path}`;
   };
 
   test('should listen on `port` given as argument', () => {

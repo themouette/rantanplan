@@ -1,5 +1,6 @@
 import createMonitoring from './monitoring';
 import createServer from './server';
+import opn from 'opn';
 
 export default function run(config) {
   const port = process.env.PORT || config.port;
@@ -10,5 +11,9 @@ export default function run(config) {
   const server = createServer(port, publicDir, monitoring);
 
   monitoring.start();
-  server.start();
+  server
+    .start()
+    .then(({ url }) => {
+      if (config.openBrowser) { opn(url); }
+    });
 }

@@ -27,4 +27,5 @@ run({
   port: 3000,
   public: resolvePublicDir(),
   sampler: 1000,
+  openBrowser: true,
 });

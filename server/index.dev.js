@@ -22,5 +22,6 @@ run({
   port: 1337,
   public: publicDir,
   sampler: 1000,
+  openBrowser: false,
 });
 
